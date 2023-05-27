@@ -24,6 +24,8 @@ def kill_process(pid):
 
 def main():
     # Get the user input
+    print("copyright-ikotun-dev23. ")
+
     port = int(input("Enter the port number: "))
 
     # Get the list of processes using the specified port

@@ -2,6 +2,7 @@ import psutil
 import os
 import types
 from rich import print
+from tabulate import tabulate
 
 
 # function to get processes by port
@@ -27,7 +28,13 @@ def return_all_processes():
         try:
             for conn in proc.connections():
                 #   if conn.status == "LISTEN":
-                processes.append(proc)
+                processes.append(
+                    {
+                        "pid": proc.info["pid"],
+                        "name": proc.info["name"],
+                        "port": conn.laddr.port,
+                    }
+                )
                 break
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -63,25 +70,30 @@ def find_process():
 
 
 def main():
-    print("[bold green]View all processes or Kill process (v/k) : ", locals())
-    choice = input()
+    print("[bold green]View all processes or Kill process (v/k)  ")
+    choice = input(">>> ")
 
     if choice.lower() == "v":
         print("Displaying all processes.....")
 
         processes = return_all_processes()
-        print(processes)
+        table_data = [[proc["pid"], proc["name"], proc["port"]] for proc in processes]
+        # table_data.append([pid, name, port])
+
+        headers = ["PID", "Name", "Port"]
+        print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
+        quit()
 
     elif choice.lower() == "k":
         processes, port = find_process()
         #  print(type(processes), type(port))
 
         if len(processes) > 0:
-            print(f"Processes using port {port}:")
+            print(f"[bold green]Process using port {port} :")
             for proc in processes:
                 print(f"PID: {proc.pid}, Name: {proc.name()}")
         else:
-            print(f"No processes found using port {port}")
+            print(f"[bold red]No processes found using port {port}")
             main()  # calling the function again if there is no ports found in the previous
 
         # Ask if the user wants to close the processes
@@ -92,7 +104,7 @@ def main():
             for proc in processes:
                 killed = kill_process(proc.pid)
                 if killed:
-                    print(f"Process with PID {proc.pid} has been killed.")
+                    print(f"[bold green]Process with PID {proc.pid} has been killed.")
                 else:
                     print(f"Failed to kill process with PID {proc.pid}.")
         elif close_processes.lower() == "c":

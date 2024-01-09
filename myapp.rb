@@ -5,8 +5,9 @@ class Myapp < Formula
   sha256 "8a1e6c9e444ef0e4b42da267af4ba70102f720957efa3e86f7a67eb85302e745"
   depends_on "python@3.9"
 
-  def install
-    bin.install "main"
+ 
+ def install
+    bin.install "killport.py" => "killport"  # Update with your script filename
   end
 
   test do

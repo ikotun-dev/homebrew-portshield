@@ -1,8 +1,8 @@
 class Myapp < Formula
   desc "CLI app to view and close processes by port number"
   homepage "https://github.com/ikotun-dev/port.shield"
-  url "https://github.com/ikotun-dev/port.shield/releases/tag/v1.0.0"
-  sha256 "8a1e6c9e444ef0e4b42da267af4ba70102f720957efa3e86f7a67eb85302e745"
+  url "https://github.com/ikotun-dev/port.shield/archive/refs/tags/v1.1.0.zip"
+  sha256 "6716c58c87d7c2ffd93afe2adcd4610c6016fa889d604430f3869d71f52735b5"
   depends_on "python@3.9"
 
  

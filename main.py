@@ -1,6 +1,7 @@
 import psutil
 import os
 import types
+from rich import print
 
 
 # function to get processes by port
@@ -62,7 +63,9 @@ def find_process():
 
 
 def main():
-    choice = input("View all processes or Kill process (v/k) : ")
+    print("[bold green]View all processes or Kill process (v/k) : ", locals())
+    choice = input()
+
     if choice.lower() == "v":
         print("Displaying all processes.....")
 

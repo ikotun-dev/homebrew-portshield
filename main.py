@@ -1,6 +1,4 @@
 import psutil
-import os
-import types
 from rich import print
 from tabulate import tabulate
 
@@ -55,7 +53,12 @@ def kill_process(pid):
 # function to find a proceess
 def find_process():
     # print("copyright-ikotun-dev23. ")
-    port = input("Enter the port number: ")
+    try:
+        port = input("Enter the port number: ")
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit()
+
     # to break out of the app
     if port == "c":
         quit()
@@ -71,7 +74,11 @@ def find_process():
 
 def main():
     print("[bold green]View all processes or Kill process (v/k)  ")
-    choice = input(">>> ")
+    try:
+        choice = input(">>> ")
+    except KeyboardInterrupt:
+        print("Exiting....")
+        quit()
 
     if choice.lower() == "v":
         print("Displaying all processes.....")
@@ -97,8 +104,12 @@ def main():
             main()  # calling the function again if there is no ports found in the previous
 
         # Ask if the user wants to close the processes
-        close_processes = input("Do you want to close the processes? (y/n) c - close: ")
-
+        print("[italic red]use e to exit ")
+        try:
+            close_processes = input("Do you want to close the processes? (y/n) : ")
+        except KeyboardInterrupt:
+            print("Exiting....")
+            quit()
         if close_processes.lower() == "y":
             # Kill the processes
             for proc in processes:
@@ -106,11 +117,15 @@ def main():
                 if killed:
                     print(f"[bold green]Process with PID {proc.pid} has been killed.")
                 else:
-                    print(f"Failed to kill process with PID {proc.pid}.")
-        elif close_processes.lower() == "c":
+                    print(f"[bold red]Failed to kill process with PID {proc.pid}.")
+        elif close_processes.lower() == "e":
+            print("Bye..")
             quit()
         else:
             main()
+    else:
+        print("[bold red]Not a valid command")
+        main()
 
 
 if __name__ == "__main__":

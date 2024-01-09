@@ -17,6 +17,23 @@ def get_processes_by_port(port):
     return processes
 
 
+# this function returns all processes
+def return_all_processes():
+    processes = []
+    for proc in psutil.process_iter(["pid", "name"]):
+        #  processes.append(proc)
+
+        try:
+            for conn in proc.connections():
+                #   if conn.status == "LISTEN":
+                processes.append(proc)
+                break
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
+    return processes
+
+
 # function to kill process by its PID
 def kill_process(pid):
     try:
@@ -27,19 +44,35 @@ def kill_process(pid):
         return False
 
 
+# function to find a proceess
 def find_process():
     # print("copyright-ikotun-dev23. ")
+    port = input("Enter the port number: ")
+    # to break out of the app
+    if port == "c":
+        quit()
+    try:
+        port = int(port)
+    except ValueError:
+        print("Not a valid port number ")
+        main()
 
-    port = int(input("Enter the port number: "))
     processes = get_processes_by_port(port)
     return processes, port
 
 
 def main():
-    processes, port = find_process()
-    print(type(processes), type(port))
+    choice = input("View all processes or Kill process (v/k) : ")
+    if choice.lower() == "v":
+        print("Displaying all processes.....")
 
-    if isinstance(port, int):
+        processes = return_all_processes()
+        print(processes)
+
+    elif choice.lower() == "k":
+        processes, port = find_process()
+        #  print(type(processes), type(port))
+
         if len(processes) > 0:
             print(f"Processes using port {port}:")
             for proc in processes:
@@ -47,25 +80,22 @@ def main():
         else:
             print(f"No processes found using port {port}")
             main()  # calling the function again if there is no ports found in the previous
-    else:
-        print(type(port))
-        main()
 
-    # Ask if the user wants to close the processes
-    close_processes = input("Do you want to close the processes? (y/n) c - close: ")
+        # Ask if the user wants to close the processes
+        close_processes = input("Do you want to close the processes? (y/n) c - close: ")
 
-    if close_processes.lower() == "y":
-        # Kill the processes
-        for proc in processes:
-            killed = kill_process(proc.pid)
-            if killed:
-                print(f"Process with PID {proc.pid} has been killed.")
-            else:
-                print(f"Failed to kill process with PID {proc.pid}.")
-    elif close_processes.lower() == "c":
-        quit()
-    else:
-        main()
+        if close_processes.lower() == "y":
+            # Kill the processes
+            for proc in processes:
+                killed = kill_process(proc.pid)
+                if killed:
+                    print(f"Process with PID {proc.pid} has been killed.")
+                else:
+                    print(f"Failed to kill process with PID {proc.pid}.")
+        elif close_processes.lower() == "c":
+            quit()
+        else:
+            main()
 
 
 if __name__ == "__main__":

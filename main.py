@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import psutil
 from rich import print
 from tabulate import tabulate

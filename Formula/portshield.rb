@@ -8,8 +8,7 @@ class Portshield < Formula
   depends_on "python"
 
   def install
-    venv = virtualenv_create(libexec, "python3")
-    venv.pip_install resources
+    system "pip3", "install", "-r", "requirements.txt"
     bin.install "main.py" => "portshield"
   
   end

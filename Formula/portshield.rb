@@ -5,7 +5,7 @@ class Portshield < Formula
   sha256 "ae3c901a8ac2c5f86e06715e0275843d93a85f93c7bd0f237a80d8c4cb2abdcb"
   license "MIT"
 
-  depends_on "python"
+  depends_on "python@3.11"
 
   def install
     system "pip3", "install", "-r", "requirements.txt"

@@ -10,7 +10,7 @@ class Portshield < Formula
   def install
     system "pip3", "install", "-r", "requirements.txt"
     bin.install "main.py" => "portshield"
-  
+    chmod "+x", bin/"portshield"
   end
 
   test do

@@ -8,11 +8,10 @@ class Portshield < Formula
   depends_on "python@3.11"
 
   def install
-    system "pip3", "install", "-r", "requirements.txt"
+    python_exec = Formula["python@3.11"].opt_bin/"python3"
+    system "#{python_exec}", "-m", "pip", "install", "-r", "requirements.txt"
     bin.install "main.py" => "portshield"
-    bin.chmod 0755, "#{bin}/portshield"
   end
-
   test do
     assert_match "Usage:", shell_output("#{bin}/portshield --help")
   end

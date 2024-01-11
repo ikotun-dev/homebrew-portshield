@@ -5,10 +5,10 @@ class Portshield < Formula
   sha256 "ae3c901a8ac2c5f86e06715e0275843d93a85f93c7bd0f237a80d8c4cb2abdcb"
   license "MIT"
 
-  depends_on "python@3.11"
+  depends_on "python"
 
   def install
-    python_exec = Formula["python@3.11"].opt_bin/"python3"
+    python_exec = Formula["python"].opt_bin/"python3"
     system "#{python_exec}", "-m", "pip", "install", "-r", "requirements.txt"
     bin.install "main.py" => "portshield"
   end
